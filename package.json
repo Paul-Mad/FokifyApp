@@ -1,0 +1,29 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "Recipe application",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Paul-Mad/FokifyApp.git"
+  },
+  "author": "Paulo Madeira",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Paul-Mad/FokifyApp/issues"
+  },
+  "homepage": "https://github.com/Paul-Mad/FokifyApp#readme",
+  "devDependencies": {
+    "parcel": "^2.0.0-beta.1",
+    "sass": "^1.32.8"
+  },
+  "dependencies": {
+    "core-js": "^3.9.0",
+    "fractional": "^1.0.0",
+    "regenerator-runtime": "^0.13.7"
+  }
+}
