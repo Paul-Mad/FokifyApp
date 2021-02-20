@@ -21,11 +21,13 @@ const controlRecipes = async function () {
     recipeView.render(model.state.recipe);
   } catch (err) {
     console.log(err);
+    recipeView.renderError();
   }
 };
 
+// SUBSCRIBER/PUBLISHER pattern to call Events in the view
 const init = function () {
-  //PUBLISHER/SUBSCRIBER pattern
   recipeView.addHandlerRender(controlRecipes);
 };
+
 init();
