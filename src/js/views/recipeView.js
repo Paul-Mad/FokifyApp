@@ -6,7 +6,7 @@ import icons from 'url:../../img/icons.svg'; // Parcel 2
 class RecipeView extends View {
   //Select the recipe container from the DOM
   _parentElement = document.querySelector('.recipe');
-  _errorMessage = 'No recipes found for your query. Please try again!';
+  _errorMessage = 'Recipe could not be found. Please try again!';
   _message = '';
 
   //Call for all events for the controlRecipes function(SUBSCRIBER/PUBLISHED pattern)
@@ -59,9 +59,7 @@ class RecipeView extends View {
           </div>
       
           <div class="recipe__user-generated">
-            <svg>
-              <use href="${icons}#icon-user"></use>
-            </svg>
+            
           </div>
           <button class="btn--round">
             <svg class="">

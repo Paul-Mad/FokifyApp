@@ -7,6 +7,10 @@ import resultsView from './views/resultsView.js';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
+if (module.hot) {
+  module.hot.accept();
+}
+
 const controlRecipes = async function () {
   try {
     //Get the hash from the browser URL
@@ -36,9 +40,9 @@ const controlSearchResults = async function () {
     //2. Load search results
     await model.loadSearchResults(query);
     //3. Render results
-    console.log(model.state.search.results);
+    resultsView.render(model.state.search.results);
   } catch (err) {
-    recipeView.renderError();
+    recipeView.renderError(model.state.search.results);
     console.error(`${err} 💥💥💥💥💥`);
   }
 };
