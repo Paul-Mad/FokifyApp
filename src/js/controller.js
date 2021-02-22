@@ -68,13 +68,23 @@ const controlServings = function (newServings) {
   recipeView.update(model.state.recipe);
 };
 
+const controlAddBookmark = function () {
+  //If not bookmarked, set bookmarked=true
+  if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
+  //Delete bookmarked passing the id
+  else model.deleteBookmark(model.state.recipe.id);
+  console.log(model.state.recipe);
+  recipeView.update(model.state.recipe);
+};
+
 /////////////      START APPLICATION   /////////////////////
 // SUBSCRIBER/PUBLISHER pattern to call Events in the view
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
+  recipeView.addHandlerAddBookmark(controlAddBookmark);
+  recipeView.addHandlerUpdateServings(controlServings);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerButtons(controlPagination);
-  recipeView.addHandlerUpdateServings(controlServings);
 };
 
 init();
