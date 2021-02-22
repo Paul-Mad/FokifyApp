@@ -16,6 +16,37 @@ export default class View {
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
+  //Updates only changed data in the DOM
+  update(data) {
+    //Set #data from the recipe state
+    this._data = data;
+    //Get the recipe html code
+    const newMarkup = this._generateMarkup();
+
+    //convert the string to a new DOM object in the memory
+    const newDOM = document.createRange().createContextualFragment(newMarkup);
+    const newElements = Array.from(newDOM.querySelectorAll('*'));
+    const curElements = Array.from(this._parentElement.querySelectorAll('*'));
+    newElements.forEach((newEl, i) => {
+      const curEl = curElements[i];
+      // console.log(curEl, newEl.isEqualNode(curEl));
+
+      //Updates changed TEXT
+      if (
+        !newEl.isEqualNode(curEl) &&
+        newEl.firstChild?.nodeValue.trim() !== ''
+      ) {
+        console.log('💥', newEl.firstChild.nodeValue.trim());
+        curEl.textContent = newEl.textContent;
+      }
+      //Updates changed ATTRIBUTES
+      if (!newEl.isEqualNode(curEl))
+        Array.from(newEl.attributes).forEach(attr =>
+          curEl.setAttribute(attr.name, attr.value)
+        );
+    });
+  }
+
   //Clear element data
   _clear() {
     this._parentElement.innerHTML = '';
