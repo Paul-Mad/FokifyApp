@@ -1,6 +1,7 @@
 import { async } from 'regenerator-runtime';
-import { API_URL, RES_PER_PAGE } from './config.js';
-import { getJSON } from './helpers.js';
+import { API_URL, RES_PER_PAGE, KEY } from './config.js';
+// import { getJSON, sendJSON } from './helpers.js';
+import { AJAX } from './helpers.js';
 
 // if (module.hot) {
 //   module.hot.accept();
@@ -18,22 +19,25 @@ export const state = {
   bookmarks: [],
 };
 
+const createRecipeObject = function (data) {
+  const { recipe } = data.data;
+  //Send the recipe data to the state
+  return (state.recipe = {
+    id: recipe.id,
+    title: recipe.title,
+    publisher: recipe.publisher,
+    sourceUrl: recipe.source_url,
+    image: recipe.image_url,
+    servings: recipe.servings,
+    cookingTime: recipe.cooking_time,
+    ingredients: recipe.ingredients,
+    ...(recipe.key && { key: recipe.key }),
+  });
+};
 export const loadRecipe = async function (id) {
   try {
-    const data = await getJSON(`${API_URL}/${id}`);
-
-    const { recipe } = data.data;
-    //Send the recipe data to the state
-    state.recipe = {
-      id: recipe.id,
-      title: recipe.title,
-      publisher: recipe.publisher,
-      sourceUrl: recipe.source_url,
-      image: recipe.image_url,
-      servings: recipe.servings,
-      cookingTime: recipe.cooking_time,
-      ingredients: recipe.ingredients,
-    };
+    const data = await AJAX(`${API_URL}/${id}`);
+    state.recipe = createRecipeObject(data);
     //Store the bookmark in the state.recipe
     if (state.bookmarks.some(bookmark => bookmark.id === id))
       state.recipe.bookmarked = true;
@@ -47,7 +51,7 @@ export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
     //Get the data from the API using the search parameter url: "https://forkify-api.herokuapp.com/api/v2/recipes?search=pizza"
-    const data = await getJSON(`${API_URL}?search=${query}`);
+    const data = await AJAX(`${API_URL}?search=${query}`);
 
     state.search.results = data.data.recipes.map(rec => {
       return {
@@ -81,11 +85,19 @@ export const updateServings = function (newServings) {
   state.recipe.servings = newServings;
 };
 
+//Storage the bookmarks from the state
+const persistBookmarks = function () {
+  //JSON.stringify converts object to string
+  localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
+};
+
 export const addBookmark = function (recipe) {
   //add bookmark
   state.bookmarks.push(recipe);
   //Mark current recipe as bookmarked
   if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+  //Store the bookmarks in localStorage
+  persistBookmarks();
 };
 
 export const deleteBookmark = function (id) {
@@ -94,4 +106,55 @@ export const deleteBookmark = function (id) {
   state.bookmarks.splice(index, 1);
   //Mark current recipe as NOT bookmarked
   if (id === state.recipe.id) state.recipe.bookmarked = false;
+  //Store the bookmarks in localStorage
+  persistBookmarks();
+};
+
+const init = function () {
+  //Get the data from storage on app start
+  const storage = localStorage.getItem('bookmarks');
+  //If there is data in storage, then get the data
+  //JSON.stringify converts string to object
+  if (storage) state.bookmarks = JSON.parse(storage);
+};
+init();
+
+const clearBookmarks = function () {
+  localStorage.clear('bookmarks');
+};
+
+// clearBookmarks();
+
+export const uploadRecipe = async function (newRecipe) {
+  try {
+    //CONVERT the object into an array (ES19 function)
+    const ingredients = Object.entries(newRecipe)
+      .filter(entry => entry[0].startsWith('ingredient') && entry[1] !== '')
+      .map(ing => {
+        const ingArr = ing[1].replaceAll(' ', '').split(',');
+        if (ingArr.length !== 3)
+          throw new Error(
+            'Wrong ingredient format! Please use the correct format :)'
+          );
+        const [quantity, unit, description] = ingArr;
+
+        return { quantity: quantity ? +quantity : null, unit, description };
+      });
+
+    const recipe = {
+      title: newRecipe.title,
+      source_url: newRecipe.image,
+      image_url: newRecipe.image,
+      publisher: newRecipe.publisher,
+      cooking_time: +newRecipe.cookingTime,
+      servings: +newRecipe.servings,
+      ingredients,
+    };
+    //Send the recipe to the API (URL,data)
+    const data = await AJAX(`${API_URL}?key=${KEY}`, recipe);
+    state.recipe = createRecipeObject(data);
+    addBookmark(state.recipe);
+  } catch (err) {
+    throw err;
+  }
 };
