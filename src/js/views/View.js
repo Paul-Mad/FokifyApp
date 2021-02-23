@@ -3,7 +3,16 @@ import icons from 'url:../../img/icons.svg'; // Parcel 2
 //Export the actual class, not and instance of the class
 export default class View {
   _data;
-  //Render data to the DOM
+
+  /**
+   * Render the received object to the DOM
+   * @param {Object | Object[]} data the data to be rendered (e.g recipe)
+   * @param {boolean} [render= true] If false, create markup string instead of rendering to th DOM
+   * @returns {undefined | string} A markup is returned if render=false
+   * @this {Object} View instance
+   * @author Paulo Madeira
+   * @todo Finish implementation
+   */
   render(data, render = true) {
     //Check if data id valid or an empty array
     if (!data || (Array.isArray(data) && data.length === 0))
