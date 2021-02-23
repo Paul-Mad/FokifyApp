@@ -18,7 +18,6 @@ class RecipeView extends View {
     this._parentElement.addEventListener('click', function (e) {
       const btn = e.target.closest('.btn--update-servings');
       if (!btn) return;
-      console.log(btn);
       const { updateTo } = btn.dataset;
       if (+updateTo > 0) handler(+updateTo);
     });
@@ -80,8 +79,10 @@ class RecipeView extends View {
             </div>
           </div>
       
-          <div class="recipe__user-generated">
-            
+          <div class="recipe__user-generated ${this._data.key ? '' : 'hidden'}">
+            <svg>
+              <use href="${icons}#icon-user"></use>
+            </svg>
           </div>
           <button class="btn--round btn--bookmark">
             <svg class="">
