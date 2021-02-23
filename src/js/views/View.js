@@ -4,7 +4,7 @@ import icons from 'url:../../img/icons.svg'; // Parcel 2
 export default class View {
   _data;
   //Render data to the DOM
-  render(data) {
+  render(data, render = true) {
     //Check if data id valid or an empty array
     if (!data || (Array.isArray(data) && data.length === 0))
       return this.renderError();
@@ -12,6 +12,7 @@ export default class View {
     this._data = data;
     //Get the recipe html code
     const markup = this._generateMarkup();
+    if (!render) return markup;
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
