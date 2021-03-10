@@ -61,9 +61,9 @@ export const loadSearchResults = async function (query) {
         sourceUrl: rec.source_url,
         image: rec.image_url,
         ...(rec.key && { key: rec.key }),
-      };
-      state.search.page = 1;
+      };      
     });
+    state.search.page = 1;
   } catch (err) {
     throw err;
   }
