@@ -4,10 +4,11 @@
 #### Javascript Learning Project
 This project was created while studying modern Javascript throughout the "Complete JavaScript Course 2021: From Zero to Expert!".
 
-What was learned in this project:
-- Parcel and babel
+What was used in this project:
+
 - Implementation of MVC Architecture
 - OOP
+- Parcel and babel
 - Consuming promises and Async/await
 - Consuming API
 -  Event handlers (Publisher-Subscriber Pattern)
