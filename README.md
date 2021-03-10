@@ -9,6 +9,7 @@ What was used in this project:
 - Implementation of MVC Architecture
 - OOP
 - npm, Parcel, and Babel
+- State control
 - Consuming promises and Async/await
 - Consuming API
 - Event handlers (Publisher-Subscriber Pattern)
