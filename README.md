@@ -8,10 +8,10 @@ What was used in this project:
 
 - Implementation of MVC Architecture
 - OOP
-- Parcel and babel
+- npm, Parcel, and Babel
 - Consuming promises and Async/await
 - Consuming API
--  Event handlers (Publisher-Subscriber Pattern)
+- Event handlers (Publisher-Subscriber Pattern)
 - Error handling and Success Messages
 - Rendering lists of items
 - Search Results
