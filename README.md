@@ -25,7 +25,9 @@ What to do next:
 - Implement new features as Shopping List and get nutrition data from "spoonacular" API
 
 
+DEMO:
 
+https://forkifyjs-pm.netlify.app/
 
 
 
